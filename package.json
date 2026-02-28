@@ -1,0 +1,17 @@
+{
+  "name": "anii-backend",
+  "version": "1.0.0",
+  "description": "a backend",
+  "keywords": [
+    "javascript",
+    "backend",
+    "anii"
+  ],
+  "license": "ISC",
+  "author": "ankit gupta",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
