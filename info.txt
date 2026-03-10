@@ -1,0 +1,3 @@
+✅ app.js → routers connect karta hai
+✅ router → endpoints define karta hai
+✅ controller → actual kaam karta hai
