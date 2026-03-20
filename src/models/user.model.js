@@ -24,7 +24,7 @@ const userSchema=new Schema({
         trim:true,
         index:true
     },
-    avtar:{
+    avatar:{
         type:String, //cloudinary URL
         required:true
     },
@@ -35,7 +35,7 @@ const userSchema=new Schema({
         type:String,
         required:[true,"Password is required"]
     },
-    freshToken:{
+    refreshToken:{
         type:String,
     },
     watchHistory:{
@@ -45,41 +45,41 @@ const userSchema=new Schema({
 },{timestamps:true})
 
 // convert into hash
-userSchema.pre("save",async function(next){
-    if(!this.isModified("password")) return next()
-    this.password=bcrypt.hash(this.password,12)
-})
+userSchema.pre("save", async function () {
+    if (!this.isModified("password")) return;
 
+    this.password = await bcrypt.hash(this.password, 12);
+});
 //chech password and inject this method in db
 userSchema.methods.isPasswordCorrect=async function(password){
     return await bcrypt.compare(password,this.password)
 }
 
-userSchema.methods.generateAccessToken=async function(){
-    return await jwt.sign(
+userSchema.methods.generateAccessToken=function(){
+    return jwt.sign(
         {
             _id:this._id,
             email:this.email,
             username:this.username,
             fullName:this.fullName
         },
-        process.env.ACCESS_TOKEN_SECRETE
+        process.env.ACCESS_TOKEN_SECRET
         ,{
-            expiresIn:ACCESS_TOKEN_EXPIRY
+            expiresIn:process.env.ACCESS_TOKEN_EXPIRY
         }
     )
 }
 
-userSchema.methods.generateRefreshToken=async function(){
-    return await jwt.sign(
+userSchema.methods.generateRefreshToken=function(){
+    return jwt.sign(
         {
             _id:this._id,
         },
-        process.env.ACCESS_REFRESH_SECRETE
+        process.env.REFRESH_TOKEN_SECRET
         ,{
-            expiresIn:ACCESS_REFRESH_EXPIRY
+            expiresIn:process.env.REFRESH_TOKEN_EXPIRY
         }
     )
 }
 
-export const User=mongoose.model("User",userSchema)
+export const User=mongoose.model("User",userSchema)  
